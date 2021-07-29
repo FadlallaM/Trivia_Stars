@@ -31,7 +31,66 @@
 
     <body>
         <div class="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a class="active" href="#">About</a></li>
+                <li><a href="#play">Play</a></li>
+            </ul>
 
+            <div class="navbar-brand">
+                <figure>
+                  <a class="logo" href="/"><img src="{{ url_for('static', filename='images/logo.gif') }}"
+                      alt="Trivia Stars' logo" id="logo"></a>
+                </figure>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="trivia_info">
+            <p>Trivia Stars</p>
+
+        </div>
+
+        <div class="container-fluid" id="random_facts">
+            
+            
+        </div>
+
+        <div class="container-fluid" id="team_info">
+            <div class="jumbotron" id="Isaac">
+                <img src="{{ url_for('static', filename='images/isaac.png') }}"
+                      alt="about isaac image" id="lsaac_image">
+                <p>Type something</p>
+
+            </div>
+
+            <div class="jumbotron" id="Yadel">
+                <img src="{{ url_for('static', filename='images/yadel.png') }}"
+                      alt="about yadel image" id="yadel_image">
+                <p>Type something</p>
+
+            </div>
+
+            <div class="jumbotron" id="Divine">
+                <img src="{{ url_for('static', filename='images/divine.png') }}"
+                      alt="about Divine image" id="Divine_image">
+                <p>Type something</p>
+
+            </div>
+
+            <div class="jumbotron" id="AJ">
+                <img src="{{ url_for('static', filename='images/isaac.png') }}"
+                      alt="about AJ image" id="AJ_image">
+                <p>Type something</p>
+
+            </div>
+
+            <div class="jumbotron" id="Fad">
+                <img src="{{ url_for('static', filename='images/Fad.png') }}"
+                      alt="about Fad image" id="Fad_image">
+                <p>Type something</p>
+
+            </div>
+            
         </div>
 
     </body>
