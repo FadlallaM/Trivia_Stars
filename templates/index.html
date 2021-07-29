@@ -30,7 +30,29 @@
     </head>
 
     <body>
+        
         <div class="navbar">
+            <ul>
+                <li><a class="active" href="#">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="#play">Play</a></li>
+            </ul>
+
+            <div class="navbar-brand">
+                <figure>
+                  <a class="logo" href="/"><img src="{{ url_for('static', filename='images/logo.gif') }}"
+                      alt="Trivia Stars' logo" id="logo"></a>
+                </figure>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="play">
+            <img src="{{ url_for('static', filename='images/logo_2.jpeg') }}"
+                      alt="Trivia Stars' logo_2" id="logo_2">
+            
+            <button id="create_game">CREATE GAME</button>
+            <button id="join_game">CREATE GAME</button>
+            
 
         </div>
         
