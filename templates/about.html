@@ -32,14 +32,14 @@
     <body>
         <div class="navbar">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a class="active" href="#">About</a></li>
-                <li><a href="#play">Play</a></li>
+                <li><a  href="#"><i class="fa fa-home"></i></a></li>
+                <li id="info"><a href="/about"><i class="fa fa-info"></i></a></li>
+                <li><a href="#play"><i class="fa fa-trophy"></i></a></li>
             </ul>
 
             <div class="navbar-brand">
                 <figure>
-                  <a class="logo" href="/"><img src="{{ url_for('static', filename='images/logo.gif') }}"
+                  <a class="logo" href="#"><img src="{{ url_for('static', filename='images/logo.gif') }}"
                       alt="Trivia Stars' logo" id="logo"></a>
                 </figure>
             </div>
@@ -52,6 +52,12 @@
         </div>
 
         <div class="container-fluid" id="random_facts">
+            <p>Random Fact</p>
+            <br>write stuff here
+        </br>
+        </div>
+        
+            
             
             
         </div>
@@ -60,7 +66,7 @@
             <div class="jumbotron" id="Isaac">
                 <img src="{{ url_for('static', filename='images/isaac.png') }}"
                       alt="about isaac image" id="lsaac_image">
-                <br>Name: Issac Ayeyi Turkson
+                <br> Name: Issac Ayeyi Turkson
                 <br>
                 Role: Full Stack Developer
                 <br>

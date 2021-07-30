@@ -1,41 +1,89 @@
 body {
-    background-image: url("{{ url_for('static', filename='images/wallpaper.gif') }}");
-    background-size: cover;
+    background: url('/static/images/wallpaper.gif');
 }
 .navbar {
-    background-color: #230041;
+    background-color: #2d0250;
+    padding: 0px;
+    border-radius: 25px;
 
+}
+
+audio {
+    display: none;
 }
 
 #logo {
-    height: 20px;
-    width: 20px
+    height: 90px;
+    width: 90px;
+    margin: -10px 56px -21px;
+    
+}
+#logo_2 {
+    height: 27rem;
+    width: 27rem;
+    margin: 0rem 9.5rem 2.8rem;
+    border-radius: 20px;
+}
+
+#play {
+    border-radius: 20px;
+    background-color: #4621ad;
+    width: 47rem;
+    padding: 0;
+    height: 37rem;
+    margin-top: 34px;
+    justify-content: center;
 }
 
 ul {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+}
+  
+.fa {
+    font-size: 52px;
+    color: #b504e1;
+    margin: 7px 37px -2px
+}
+
+.fa:hover {
+    color: white;
 }
 
 li {
     float: left;
-}
-  
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+    height: 67px;
+    border-radius: 25px;
+    margin: 7px 2px -8px;
 }
 
-li a:hover:not(.active) {
-    background-color: #111;
+
+#play button {
+    background-color: #2d0250;
+    text-align: center;
+    margin: -1rem 11.5rem 1rem;
+    width: 50%;
+    height: 2.5rem;
+    border-radius: 20px;
+    color: white;
 }
-  
-.active {
-    background-color: #04AA6D;
+
+#play button:hover {
+    cursor: pointer;
+    background-color: #e83e8c;
+}
+
+#info {
+    border-radius: 50%;
+    background-color: #b504e1;
+}
+
+.fa-info {
+    color: black;
+}
+
+#overlay {
+    display: none;
+}
+#overlay_1 {
+    display: none;
 }
