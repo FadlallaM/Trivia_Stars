@@ -52,7 +52,7 @@ li a:hover:not(.active) {
     border-radius: 20px;
     color: white;
 }
-
+ 
 #trivia_info{
     width: 100%;
     padding-right: 15px;
@@ -67,7 +67,7 @@ li a:hover:not(.active) {
     opacity: 0.65;
     border-radius: 1.3rem;
     color: white;
-    
+    font-weight: bold;
     }
 
 #random_facts{
