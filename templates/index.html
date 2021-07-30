@@ -51,6 +51,122 @@
             <button id="create_game">CREATE GAME</button>
             <button id="join_game">CREATE GAME</button>
             
+        </div>
+
+        <div id="overlay" class="container-fluid">
+            <i class="fa fa-xmark" id="closebtn" onclick="off()"></i>
+
+            <form name="play_solo_form" id= "play_solo_id" method="POST" action="/solo/game">
+                <label>Nickname: </label><br>
+                <input type="text" name="nickname" data-error="Enter your nickname" placeholder="Nickname" required><br>
+
+                <label>Number of Questions: </label><br>
+                <input type="number" step="any" min="1" max="20" name="amount" data-error="Enter the number of questions from 1-20" placeholder="1" required><br>
+
+                <label>Select Category: </label><br>
+                <select name="category" id="category">
+                    <option value="default_c">Any Category</option>
+                    <option value="9">General Knowledge</option>
+                    <option value="10">Entertainment: Books</option>
+                    <option value="Film and TV">Film and TV</option>
+                    <option value="Music">Music</option>
+                    <option value="13">Musicals and Theatres</option>
+                    <option value="15">Video Games</option>
+                    <option value="16">Board Games</option>
+                    <option value="17">Science and Nature</option>
+                    <option value="18">Science: Computers</option>
+                    <option value="19">Science: Mathematics</option>
+                    <option value="20">Mythology</option>
+                    <option value="21">Sports</option>
+                    <option value="Geography">Geography</option>
+                    <option value="Food and Drink">Food and Drink</option>
+                    <option value="23">History</option>
+                    <option value="24">Politics</option>
+                    <option value="25">Art</option>
+                    <option value="26">Celebrities</option>
+                    <option value="27">Animals</option>
+                    <option value="28">Vehicles</option>
+                    <option value="29">Entertainment: Comics</option>
+                    <option value="30">Science: Gadgets</option>
+                    <option value="31">Entertainment: Japanese Anime and Manga</option>
+                    <option value="Sport and Leisure">Sport and Leisure</option>
+                    <option value="Society and Culture">Society and Culture</option>
+                    <option value="Art and Literature">Art and Literature</option>
+                </select><br>
+
+                <label>Select Difficulty:</label><br>
+                <select name="difficulty" id="category">
+                    <option value="default_d">Any Difficulty</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select><br>
+                
+                <button type="submit" id="form_submit">submit</button>
+            </form>
+        </div>
+
+        <div id="overlay_1" class="container-fluid">
+            <i class="fa fa-xmark" id="closebtn" onclick="off_1()"></i>
+
+            <form name="create_game_form" id= "create_game_id" method="POST" action="/create/game">
+                <label>Nickname: </label><br>
+                <input type="text" name="nickname" data-error="Enter your nickname" placeholder="Nickname" required><br>
+                
+                <label>Number of Questions: </label><br>
+                <input type="number" step="any" min="1" max="10" name="amount" data-error="Enter the number of questions from 1-10" placeholder="10" required><br>
+
+                <label>Select Category: </label><br>
+                <select name="category" id="category">
+                    <option value="default_c">Any Category</option>
+                    <option value="9">General Knowledge</option>
+                    <option value="10">Entertainment: Books</option>
+                    <option value="Film and TV">Film and TV</option>
+                    <option value="Music">Music</option>
+                    <option value="13">Musicals and Theatres</option>
+                    <option value="15">Video Games</option>
+                    <option value="16">Board Games</option>
+                    <option value="17">Science and Nature</option>
+                    <option value="18">Science: Computers</option>
+                    <option value="19">Science: Mathematics</option>
+                    <option value="20">Mythology</option>
+                    <option value="21">Sports</option>
+                    <option value="Geography">Geography</option>
+                    <option value="Food and Drink">Food and Drink</option>
+                    <option value="23">History</option>
+                    <option value="24">Politics</option>
+                    <option value="25">Art</option>
+                    <option value="26">Celebrities</option>
+                    <option value="27">Animals</option>
+                    <option value="28">Vehicles</option>
+                    <option value="29">Entertainment: Comics</option>
+                    <option value="30">Science: Gadgets</option>
+                    <option value="31">Entertainment: Japanese Anime and Manga</option>
+                    <option value="sport_and_leisure">Sport and Leisure</option>
+                    <option value="Society and Culture">Society and Culture</option>
+                    <option value="Art and Literature">Art and Literature</option>
+                </select><br>
+
+                <label>PIN: </label><br>
+                <input type="number" step="1" min="1000" max="9999" name="pin" data-error="create unique pin" placeholder="eg; 1222" required><br>
+                
+                <button type="submit" id="form_submit">submit</button>
+            </form>
+
+        </div>
+
+        <div id="overlay_2" class="container-fluid">
+            <i class="fa fa-circle-xmark" id="closebtn" onclick="off_2()"></i>
+
+            <form name="join_game_form" id= "join_game_id" method="POST" action="/join/game">
+                <label>Nickname: </label><br>
+                <input type="text" name="nickname" data-error="Enter your nickname" placeholder="Nickname" required><br>
+
+                <label>Enter game PIN: </label><br>
+                <input type="number" step="1" min="1000" max="9999" name="pin" data-error="create unique pin" placeholder="eg; 1222" required><br>
+                
+                <button type="submit" id="form_submit">submit</button>
+            </form>
 
         </div>
         
