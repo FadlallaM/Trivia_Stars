@@ -44,6 +44,7 @@ def user_input():
 
     return quiz(correct_answers, final_answers, question_list)
 
+
 def getNewUrl(amount,category):
     base_url = 'https://trivia.willfry.co.uk/api/questions?'
     final_url = base_url + 'limit=' + str(amount)
@@ -95,8 +96,6 @@ def getUrl(amount, category, difficulty, typeQ):
     return final_url
 
 
-
-
 def getJson(final_url):
     response = requests.get(final_url)
     data = response.json()
@@ -124,6 +123,14 @@ def toDict(json_data):
     # print('c list' , correct_list)
 
     return correct_list, final_answers, question_list
+
+
+def getFact():
+    url = 'https://uselessfacts.jsph.pl/random.json?language=en'
+    response = requests.get(url)
+    data = response.json()
+    fact = data['text']
+    return fact
 
 
 @app.route("/")
