@@ -132,6 +132,17 @@ def getFact():
     fact = data['text']
     return fact
 
+def getManyFacts():
+    fact = []
+    url = 'https://uselessfacts.jsph.pl/random.json?language=en'
+    for i in range(10):
+        response = requests.get(url)
+        data = response.json()
+        facts = data['text']
+        facts = facts.replace(u'\xa0', u'')
+        fact.append(facts)
+    return fact
+
 
 @app.route("/")
 @app.route("/home")
