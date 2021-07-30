@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -30,21 +29,16 @@
     </head>
 
     <body>
-        <audio controls> 
-            <source src="{{ url_for('static', filename='song/TriviaSong.ogg') }}" type="audio/ogg"> 
-            <source src="{{ url_for('static', filename='song/TriviaSong.mp3') }}" type="audio/mpeg"> 
-        </audio> 
-
         <div class="navbar">
             <ul>
-                <li><a  href="#"><i class="fa fa-home"></i></a></li>
-                <li id="info"><a href="/about"><i class="fa fa-info"></i></a></li>
-                <li><a href="#play"><i class="fa fa-trophy"></i></a></li>
+                <li><a class="active" href="#">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="#play">Play</a></li>
             </ul>
 
             <div class="navbar-brand">
                 <figure>
-                  <a class="logo" href="#"><img src="{{ url_for('static', filename='images/logo.gif') }}"
+                  <a class="logo" href="/"><img src="{{ url_for('static', filename='images/logo.gif') }}"
                       alt="Trivia Stars' logo" id="logo"></a>
                 </figure>
             </div>
@@ -52,11 +46,10 @@
 
         <div class="container-fluid" id="play">
             <img src="{{ url_for('static', filename='images/logo_2.jpeg') }}"
-                      alt="Trivia Stars' logo_2" id="logo_2"></br>
-
-            <button onclick="on()" id="create_game">PLAY SOLO</button></br>
-            <button onclick="on_1()" id="create_game">CREATE MULTIPLAYER GAME</button></br>
-            <button onclick="on_2()" id="join_game">JOIN MULTIPLAYER GAME</button>
+                      alt="Trivia Stars' logo_2" id="logo_2">
+            
+            <button id="create_game">CREATE GAME</button>
+            <button id="join_game">CREATE GAME</button>
             
         </div>
 
@@ -175,10 +168,9 @@
                 <button type="submit" id="form_submit">submit</button>
             </form>
 
-            <a id="random_game" href="/join/random">Join Random Game</a>
         </div>
 
+
     </body>
-    
-    <script src="{{ url_for('static',  filename='js/index.js') }}"></script>
+
 </html>
