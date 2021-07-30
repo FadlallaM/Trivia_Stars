@@ -130,6 +130,7 @@ def getFact():
     response = requests.get(url)
     data = response.json()
     fact = data['text']
+    facts = facts.replace(u'\xa0', u'')
     return fact
 
 def getManyFacts():
