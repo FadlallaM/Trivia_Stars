@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request
 import requests
 import random
 import html
+
 app = Flask(__name__)
 
 '''
@@ -23,26 +24,61 @@ def user_input():
     global correct_answers
     global final_answers
     global amount
+    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'science', 'society_and_culture', 'sport_and_leisure']
     amount = request.form.get("amount")
     category = request.form.get("category")
     difficulty = request.form.get("difficulty")
-    typeQ = request.form.get("type")
+    # typeQ = request.form.get("type")
 
-    url = getUrl(amount, category, difficulty, typeQ)
-    Json = getJson(url)
-    correct_answers, final_answers, question_list = toDict(Json)
+    # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
+    if (category in categories_list):
+        url = getNewUrl(amount,category)
+        Json = getNewJson(url)
+        correct_answers, final_answers, question_list = newToDict(Json)
 
-    # session['correct_answers'] = correct_answers
-    # session["final_answers"] = final_answers
-    # session["question_list"] = question_list
-    # print('INITIAL LIST: ', question_list)
-
-    # next_que = [0]
-    # session["next_que"] = next_que
-    # quiz(correct_answers,final_answers,question_list)
-    # next_question(correct_answers,final_answers,question_list)
+    else:
+        url = getUrl(amount, category,difficulty)
+        Json = getJson(url)
+        correct_answers, final_answers, question_list = toDict(Json)
+    
 
     return quiz(correct_answers, final_answers, question_list)
+
+def getNewUrl(amount,category):
+    base_url = 'https://trivia.willfry.co.uk/api/questions?'
+    final_url = base_url + 'limit=' + str(amount)
+    # print('before, ', final_url)
+    if category != 'default_c':
+        final_url = base_url + 'categories=' + category + '&limit=' + str(amount)
+        # print(final_url)
+    return final_url
+
+
+def getNewJson(url):
+    response = requests.get(url)
+    data = response.json()
+    return data
+
+
+def newToDict(json):
+    question_list = []
+    correct_list = []
+    correct = []
+    answers = []
+    final_answers = []
+    temp_list = []
+    i = 0;
+    for value in json:
+        #print(value['question'])
+        question_list.append(value['question'])
+        correct_list.append(value['correctAnswer'])
+        correct = value['correctAnswer']
+        # Grabs only 3 incorrect answers to make sure corect answer will always be on screen
+        answers = value['incorrectAnswers'][:3]
+        answers.append(correct)
+        random.shuffle(answers)
+        final_answers.append(answers)
+    return correct_list, final_answers, question_list
 
 
 def getUrl(amount, category, difficulty, typeQ):
@@ -56,11 +92,9 @@ def getUrl(amount, category, difficulty, typeQ):
     if difficulty != 'default_d':
         final_url = final_url + '&difficulty=' + str(difficulty)
 
-    # type
-    if typeQ != 'default_t':
-        final_url = final_url + '&type=' + str(typeQ)
-
     return final_url
+
+
 
 
 def getJson(final_url):
@@ -70,7 +104,7 @@ def getJson(final_url):
 
 
 def toDict(json_data):
-    question_list = {}
+    question_list = []
     correct_list = []
     correct = []
     answers = []
@@ -78,7 +112,7 @@ def toDict(json_data):
     for value in json_data['results']:
         # print(value)
         # questions.append(value['question'])
-        question_list[value['question']] = value['type']
+        question_list.append(value['question'])
         correct_list.append(value['correct_answer'])
         correct = value['correct_answer']
         answers = value['incorrect_answers']
@@ -129,12 +163,12 @@ def info():
 
 def quiz(correct_answers, final_answers, question_list):
     # redirect("/quiz")
-    question_type = list(question_list.values())[0]
+    # question_type = list(question_list.values())[0]
     # print(question_type)
     # print(next(iter(question_list)))
-    question_name = list(question_list.keys())[0]
+    question_name = question_list[0]
 
-    if question_type == 'multiple':
+    #if question_type == 'multiple':
         return render_template(
             'quiz.html',
             question='1) ' +
@@ -148,13 +182,13 @@ def quiz(correct_answers, final_answers, question_list):
             answer4=html.unescape(
                 final_answers[0][3]))
 
-    if question_type == 'boolean':
-        return render_template(
-            "quiz.html",
-            question='1) ' +
-            html.unescape(question_name),
-            answer1='True',
-            answer2='False')
+    # if question_type == 'boolean':
+    #     return render_template(
+    #         "quiz.html",
+    #         question='1) ' +
+    #         html.unescape(question_name),
+    #         answer1='True',
+    #         answer2='False')
 
 
 next_que = 0
@@ -186,15 +220,15 @@ def next_question():
         # print(score)
         # return home()
     next_que += 1
-    question_type = list(question_list.values())[next_que]
-    question_name = list(question_list.keys())[next_que]
+    #question_type = list(question_list.values())[next_que]
+    question_name = question_list[next_que]
     # print(question_name)
 
     # print(next_que)
     # print('AMT: ', amount)
 
-    if question_type == 'multiple':
-        print(final_answers)
+   # if question_type == 'multiple':
+        #print(final_answers)
         return render_template(
             'quiz.html',
             question=str(
@@ -208,17 +242,17 @@ def next_question():
             answer4=html.unescape(
                 final_answers[next_que][3]))
 
-    if question_type == 'boolean':
-        print(final_answers)
-        return render_template(
-            "quiz.html",
-            question=str(
-                next_que +
-                1) +
-            ") " +
-            html.unescape(question_name),
-            answer1='True',
-            answer2='False')
+    # if question_type == 'boolean':
+    #     print(final_answers)
+    #     return render_template(
+    #         "quiz.html",
+    #         question=str(
+    #             next_que +
+    #             1) +
+    #         ") " +
+    #         html.unescape(question_name),
+    #         answer1='True',
+    #         answer2='False')
 
 
 @app.route("/display_score/<score><amount>")
