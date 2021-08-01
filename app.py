@@ -28,8 +28,7 @@ def user_input():
     amount = request.form.get("amount")
     category = request.form.get("category")
     difficulty = request.form.get("difficulty")
-    # typeQ = request.form.get("type")
-
+    
     # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
     if (category in categories_list):
         url = getNewUrl(amount,category)
@@ -82,7 +81,7 @@ def newToDict(json):
     return correct_list, final_answers, question_list
 
 
-def getUrl(amount, category, difficulty, typeQ):
+def getUrl(amount, category, difficulty):
     Base_url = 'https://opentdb.com/api.php?amount=' + str(amount)
     final_url = Base_url
     # categoryA
@@ -181,13 +180,8 @@ def info():
 
 
 def quiz(correct_answers, final_answers, question_list):
-    # redirect("/quiz")
-    # question_type = list(question_list.values())[0]
-    # print(question_type)
-    # print(next(iter(question_list)))
     question_name = question_list[0]
 
-    #if question_type == 'multiple':
         return render_template(
             'quiz.html',
             question='1) ' +
@@ -200,14 +194,6 @@ def quiz(correct_answers, final_answers, question_list):
                 final_answers[0][2]),
             answer4=html.unescape(
                 final_answers[0][3]))
-
-    # if question_type == 'boolean':
-    #     return render_template(
-    #         "quiz.html",
-    #         question='1) ' +
-    #         html.unescape(question_name),
-    #         answer1='True',
-    #         answer2='False')
 
 
 next_que = 0
@@ -225,8 +211,6 @@ def next_question():
 
     answer = request.form.get("answers")
 
-    # print('outside', final_answers[next_que][int(answer)])
-    # print('outside', correct_answers[next_que])
     if(final_answers[next_que][int(answer)] == correct_answers[next_que]):
         print(final_answers[next_que][int(answer)])
         print(correct_answers[next_que])
@@ -239,7 +223,6 @@ def next_question():
         # print(score)
         # return home()
     next_que += 1
-    #question_type = list(question_list.values())[next_que]
     question_name = question_list[next_que]
     # print(question_name)
 
@@ -261,17 +244,6 @@ def next_question():
             answer4=html.unescape(
                 final_answers[next_que][3]))
 
-    # if question_type == 'boolean':
-    #     print(final_answers)
-    #     return render_template(
-    #         "quiz.html",
-    #         question=str(
-    #             next_que +
-    #             1) +
-    #         ") " +
-    #         html.unescape(question_name),
-    #         answer1='True',
-    #         answer2='False')
 
 
 @app.route("/display_score/<score><amount>")
