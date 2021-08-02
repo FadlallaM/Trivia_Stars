@@ -123,26 +123,6 @@ def toDict(json_data):
     return correct_list, final_answers, question_list
 
 
-def getFact():
-    url = 'https://uselessfacts.jsph.pl/random.json?language=en'
-    response = requests.get(url)
-    data = response.json()
-    fact = data['text']
-    facts = fact.replace(u'\xa0', u'')
-    return fact
-
-def getManyFacts():
-    fact = []
-    url = 'https://uselessfacts.jsph.pl/random.json?language=en'
-    for i in range(10):
-        response = requests.get(url)
-        data = response.json()
-        facts = data['text']
-        facts = facts.replace(u'\xa0', u'')
-        fact.append(facts)
-    return fact
-
-
 @app.route("/")
 @app.route("/home")
 def home():
@@ -179,6 +159,7 @@ def info():
 
 
 def quiz(correct_answers, final_answers, question_list):
+    #start stopwatch
     question_name = question_list[0]
 
         return render_template(
@@ -214,6 +195,7 @@ def next_question():
         print(final_answers[next_que][int(answer)])
         print(correct_answers[next_que])
         score += 1
+    
 
     if int(next_que + 1) == int(amount):
         print('\n\n\nLAST QUESTION\n\n\n\n')
@@ -248,6 +230,8 @@ def next_question():
 @app.route("/display_score/<score><amount>")
 def display_score(score, amount):
     global nickname
+    #time = stop stopwatch
+    #addToDB(nickname,score,time)
     try:
         return render_template(
             "score.html",
@@ -270,9 +254,7 @@ def home():
 def about():
     return render_template('about.html')
 
-<<<<<<< HEAD
     
-=======
 @app.route("/leaderboard")
 def leaderboard():
     return render_template('leaderboard.html')
@@ -280,7 +262,6 @@ def leaderboard():
 @app.route("/quiz")
 def quiz():
     return render_template('quiz.html')
->>>>>>> 299cee3074fda7407c463200df4eb2c513a873b1
     
 if __name__ == '__main__':
     app.run(debug=True)
