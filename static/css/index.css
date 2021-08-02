@@ -74,10 +74,15 @@ li {
 #info {
     border-radius: 50%;
     background-color: #b504e1;
+    width: 73px;
+    height: 66px;
+    padding-right: 14px;
+    margin-right: -1px;
 }
 
 .fa-info {
     color: black;
+    margin: 8px 27px 6px;
 }
 
 #overlay {
@@ -116,7 +121,7 @@ li {
 form {
     width: 790px;
     height: 289px;
-    margin: -21px -42px 13px;
+    margin: -21px -42px -80px;
     text-align: center;
 }
 
@@ -136,26 +141,30 @@ input {
 #random_game {
     background-color: #2d0250;
     text-align: center;
-    margin: -2rem 11rem 14px;
-    width: 50%;
-    height: 2.5rem;
+    margin: 0rem 18rem 14px;
+    font-size: 14px;
     border-radius: 20px;
     color: white;
 }
-
+#random_game:hover {
+    color: #e83e8c;
+    cursor: pointer;
+}
 #closebtn {
-    margin: 28px 10px 10px;
-    font-size: 47px;
-    color:white;
+    margin: 14px 531px 24px;
+    font-size: 43px;
+    color: white;
 }
 #closebtn:hover {
     color: #e83e8c;
+    cursor: pointer;
 }
 select {
     width: 54%;
     height: 47px;
     border-radius: 20px;
     text-align: center;
+    text-align-last: center;
 }
 
 #form_submit {
@@ -169,3 +178,4 @@ select {
     background-color: #e83e8c;
     color: white;
 }
+
