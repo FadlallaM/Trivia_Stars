@@ -1,6 +1,6 @@
 body {
     background: url('/static/images/wallpaper.gif');
-    
+    font-family: Poppins-Regular, sans-serif;
 }
 
 .navbar {

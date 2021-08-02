@@ -269,6 +269,14 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html')
+
+@app.route("/leaderboard")
+def leaderboard():
+    return render_template('leaderboard.html')
+
+@app.route("/quiz")
+def quiz():
+    return render_template('quiz.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
