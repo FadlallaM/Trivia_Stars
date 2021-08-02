@@ -128,7 +128,7 @@ def getFact():
     response = requests.get(url)
     data = response.json()
     fact = data['text']
-    facts = facts.replace(u'\xa0', u'')
+    facts = fact.replace(u'\xa0', u'')
     return fact
 
 def getManyFacts():
@@ -270,6 +270,9 @@ def home():
 def about():
     return render_template('about.html')
 
+<<<<<<< HEAD
+    
+=======
 @app.route("/leaderboard")
 def leaderboard():
     return render_template('leaderboard.html')
@@ -277,6 +280,7 @@ def leaderboard():
 @app.route("/quiz")
 def quiz():
     return render_template('quiz.html')
+>>>>>>> 299cee3074fda7407c463200df4eb2c513a873b1
     
 if __name__ == '__main__':
     app.run(debug=True)
