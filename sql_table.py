@@ -1,0 +1,40 @@
+from sqlalchemy import create_engine
+import os
+import pandas as pd
+
+def addData_save(data):
+   
+  database_name = "leaderboard"
+  filetable_name = "leader_board.sql"
+  table_name = 'leader_board'  
+   
+  #create sql if not exits 
+  os.system('mysql -u root -pcodio -e "CREATE DATABASE IF NOT EXISTS '+database_name+';"')
+  os.system("mysql -u root -pcodio "+database_name+" < " + filetable_name)
+  engine = create_engine('mysql://root:codio@localhost/'+database_name+'?charset=utf8', encoding='utf-8')
+
+  df = [] 
+  #inserting data to sql table 
+  id = 1
+  
+  col_names = ["ID", "Nickname", "score", "Time"]
+  df_i = pd.DataFrame(columns = col_names)
+
+  for player in data:
+    nickname, score, time = player
+    df_i.loc[len(df_i.index)] = [str(id), nickname, score, time]
+   
+    df.append(df_i)
+    id+=1
+  
+
+  #save sql 
+  for df_name in df:
+    df_name.to_sql(table_name, con=engine, if_exists='replace', index=False)
+  os.system('mysqldump -u root -pcodio '+database_name+' > '+ filetable_name)
+
+
+
+
+#testing = [['name1', '7', '5:00'], ['name2', '5', '2:20'], ['name3', '2', '5:25'], ['name4', '51', '51:20']]
+#addData_save(testing)
