@@ -1,39 +1,124 @@
 body {
-    background-image: url("{{ url_for('static', filename='images/wallpaper.gif') }}");;
-    background-size: 100%;
+    background: url('/static/images/wallpaper.gif');
+    font-family: Poppins-Regular, sans-serif;
 }
+
 .navbar {
-    background-color: #230041;
+    background-color: #2d0250;
+    padding: 0px;
+    border-radius: 25px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+
 }
 
 #logo {
-    height: 20px;
-    width: 20px
+    height: 90px;
+    width: 90px;
+    margin: -10px 56px -21px;
+    cursor: pointer;
+    
 }
+
 ul {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+}
+  
+.fa {
+    font-size: 52px;
+    color: #b504e1;
+    margin: 7px 37px -2px
+}
+
+.fa:hover {
+    color: white;
 }
 
 li {
     float: left;
-}
-  
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+    height: 67px;
+    border-radius: 25px;
+    margin: 7px 2px -8px;
 }
 
-li a:hover:not(.active) {
-    background-color: #111;
+#info {
+    border-radius: 50%;
+    background-color: #b504e1;
+    width: 73px;
+    height: 66px;
+    padding-right: 14px;
+    margin-right: -1px;
 }
-  
-.active {
-    background-color: #04AA6D;
+
+.fa-info {
+    color: black;
+    margin: 8px 27px 6px;
+}
+
+#trivia_info{
+    width: 1300px;
+    height: 300px;
+    border: 1px solid transparent;
+    border-radius: 25px;
+    background-color: rgba(70, 33, 173, 0.47);
+    background-size: cover;
+    margin: 107px 103px 10px;
+}
+
+#random_facts{
+    width: 1300px;
+    height: 300px;
+    border-radius: 25px;
+    background-color: rgba(254, 71, 184, 0.34);
+    background-size: cover;
+    margin: 27px 103px 10px;
+}
+
+#team_info{
+    width: 100%;
+}
+
+#left .jumbotron {
+    width: 33rem;
+    height: 41rem;
+    border-radius: 25px;
+    background-color: rgba(29, 209, 203, 0.5);
+    background-size: cover;
+    margin: 7px 212px 26px;
+    font-size: 20px;
+    color:  #e37719;
+}
+
+#right .jumbotron {
+    width: 33rem;
+    height: 41rem;
+    border-radius: 25px;
+    background-color: rgba(29, 209, 203, 0.5);
+    background-size: cover;
+    margin: 7px 4px 26px;
+    color: #e37719;
+    font-size: 20px;
+}
+
+.jumbotron img {
+    height: 41rem;
+    width: 33rem;
+    border-radius: 25px;
+    margin: -64px -32px 8px;
+
+}
+
+h1 {
+    font-size: 36px;
+    color: #e37719;
+    text-decoration: none solid rgb(227, 119, 25);
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    font-size: 25px;
+    color: #e37719;
+    text-decoration: none solid rgb(227, 119, 25);
 }

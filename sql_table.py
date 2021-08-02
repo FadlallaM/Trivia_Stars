@@ -14,6 +14,7 @@ def addData_save(data):
   engine = create_engine('mysql://root:codio@localhost/'+database_name+'?charset=utf8', encoding='utf-8')
 
   df = [] 
+
   #inserting data to sql table 
   id = 1
   

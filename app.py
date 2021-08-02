@@ -24,11 +24,10 @@ def user_input():
     global correct_answers
     global final_answers
     global amount
-    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'science', 'society_and_culture', 'sport_and_leisure']
+    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'society_and_culture', 'sport_and_leisure', 'geography']
     amount = request.form.get("amount")
     category = request.form.get("category")
     difficulty = request.form.get("difficulty")
-    # typeQ = request.form.get("type")
 
     # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
     if (category in categories_list):
@@ -43,6 +42,7 @@ def user_input():
     
 
     return quiz(correct_answers, final_answers, question_list)
+
 
 def getNewUrl(amount,category):
     base_url = 'https://trivia.willfry.co.uk/api/questions?'
@@ -67,7 +67,6 @@ def newToDict(json):
     answers = []
     final_answers = []
     temp_list = []
-    i = 0;
     for value in json:
         #print(value['question'])
         question_list.append(value['question'])
@@ -81,7 +80,7 @@ def newToDict(json):
     return correct_list, final_answers, question_list
 
 
-def getUrl(amount, category, difficulty, typeQ):
+def getUrl(amount, category, difficulty):
     Base_url = 'https://opentdb.com/api.php?amount=' + str(amount)
     final_url = Base_url
     # categoryA
@@ -93,8 +92,6 @@ def getUrl(amount, category, difficulty, typeQ):
         final_url = final_url + '&difficulty=' + str(difficulty)
 
     return final_url
-
-
 
 
 def getJson(final_url):
@@ -162,13 +159,9 @@ def info():
 
 
 def quiz(correct_answers, final_answers, question_list):
-    # redirect("/quiz")
-    # question_type = list(question_list.values())[0]
-    # print(question_type)
-    # print(next(iter(question_list)))
+    #start stopwatch
     question_name = question_list[0]
 
-    #if question_type == 'multiple':
         return render_template(
             'quiz.html',
             question='1) ' +
@@ -181,14 +174,6 @@ def quiz(correct_answers, final_answers, question_list):
                 final_answers[0][2]),
             answer4=html.unescape(
                 final_answers[0][3]))
-
-    # if question_type == 'boolean':
-    #     return render_template(
-    #         "quiz.html",
-    #         question='1) ' +
-    #         html.unescape(question_name),
-    #         answer1='True',
-    #         answer2='False')
 
 
 next_que = 0
@@ -206,12 +191,11 @@ def next_question():
 
     answer = request.form.get("answers")
 
-    # print('outside', final_answers[next_que][int(answer)])
-    # print('outside', correct_answers[next_que])
     if(final_answers[next_que][int(answer)] == correct_answers[next_que]):
         print(final_answers[next_que][int(answer)])
         print(correct_answers[next_que])
         score += 1
+    
 
     if int(next_que + 1) == int(amount):
         print('\n\n\nLAST QUESTION\n\n\n\n')
@@ -220,7 +204,6 @@ def next_question():
         # print(score)
         # return home()
     next_que += 1
-    #question_type = list(question_list.values())[next_que]
     question_name = question_list[next_que]
     # print(question_name)
 
@@ -242,22 +225,13 @@ def next_question():
             answer4=html.unescape(
                 final_answers[next_que][3]))
 
-    # if question_type == 'boolean':
-    #     print(final_answers)
-    #     return render_template(
-    #         "quiz.html",
-    #         question=str(
-    #             next_que +
-    #             1) +
-    #         ") " +
-    #         html.unescape(question_name),
-    #         answer1='True',
-    #         answer2='False')
 
 
 @app.route("/display_score/<score><amount>")
 def display_score(score, amount):
     global nickname
+    #time = stop stopwatch
+    #addToDB(nickname,score,time)
     try:
         return render_template(
             "score.html",
@@ -279,6 +253,15 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html')
+
+    
+@app.route("/leaderboard")
+def leaderboard():
+    return render_template('leaderboard.html')
+
+@app.route("/quiz")
+def quiz():
+    return render_template('quiz.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
