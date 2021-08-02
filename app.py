@@ -67,7 +67,6 @@ def newToDict(json):
     answers = []
     final_answers = []
     temp_list = []
-    i = 0;
     for value in json:
         #print(value['question'])
         question_list.append(value['question'])

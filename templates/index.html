@@ -61,6 +61,7 @@
         </div>
 
         <div id="overlay" class="container-fluid">
+            <i class="fa fa-close" id="closebtn" onclick="off()"></i>
 
             <form name="play_solo_form" id= "play_solo_id" method="POST" action="/solo/game">
                 <label>Nickname: </label><br>
@@ -114,7 +115,7 @@
         </div>
 
         <div id="overlay_1" class="container-fluid">
-            <i class="fa fa-xmark" id="closebtn" onclick="off_1()"></i>
+            <i class="fa fa-close" id="closebtn" onclick="off_1()"></i>
 
             <form name="create_game_form" id= "create_game_id" method="POST" action="/create/game">
                 <label>Nickname: </label><br>
@@ -164,7 +165,7 @@
         </div>
 
         <div id="overlay_2" class="container-fluid">
-            <i class="fa fa-circle-xmark" id="closebtn" onclick="off_2()"></i>
+            <i class="fa fa-close" id="closebtn" onclick="off_2()"></i>
 
             <form name="join_game_form" id= "join_game_id" method="POST" action="/join/game">
                 <label>Nickname: </label><br>
@@ -178,6 +179,7 @@
 
             <a id="random_game" href="/join/random">Join Random Game</a>
         </div>
+        
 
     </body>
     

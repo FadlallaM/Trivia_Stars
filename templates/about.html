@@ -24,7 +24,7 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js" integrity="sha512-RdSPYh1WA6BF0RhpisYJVYkOyTzK4HwofJ3Q7ivt/jkpW6Vc8AurL1R+4AUcvn9IwEKAPm/fk7qFZW3OuiUDeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
-
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
       <!-- Custom styles for this template -->
       <link rel="stylesheet" href="{{ url_for('static',    filename='css/about.css') }}">
     </head>
@@ -32,9 +32,9 @@
     <body>
         <div class="navbar">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a class="active" href="#">About</a></li>
-                <li><a href="#play">Play</a></li>
+                <li><a  href="/"><i class="fa fa-home"></i></a></li>
+                <li id="info"><a href="#"><i class="fa fa-info"></i></a></li>
+                <li><a href="#play"><i class="fa fa-trophy"></i></a></li>
             </ul>
 
             <div class="navbar-brand">
@@ -46,49 +46,109 @@
         </div>
 
         <div class="container-fluid" id="trivia_info">
-            <p>Trivia Stars</p>
-
+            <h1>Trivia Stars</h1>
+            <p id="trivia_sentence">We are all about fun....., chill and have fun with your family and friends, you can do this and that, get scores, leaderboards, memes to amke you happy, random jokes, someone add stufff</p>
         </div>
 
         <div class="container-fluid" id="random_facts">
-            
-            
+            <h1>Random Facts</h1>
+            <p id="random_fact">write stuff here</p>
         </div>
-
-        <div class="container-fluid" id="team_info">
-            <div class="jumbotron" id="Isaac">
-                <img src="{{ url_for('static', filename='images/isaac.png') }}"
-                      alt="about isaac image" id="lsaac_image">
-                <p>Type something</p>
-
+        
+        <h1>Meet The Team</h1>
+        <div class="row" id="team_info">
+            <div class="col-lg-6" id="left">
+                <div class="jumbotron" id="Isaac">
+                    <img src="{{ url_for('static', filename='images/ayeyi.jpg') }}"
+                          alt="about isaac image" id="lsaac_image">
+                </div>
+    
+                <div class="jumbotron" id="Yadel">
+                    <br>Name: Yadel Negash
+                    <br>
+                    Role: Back-end Developer
+                    <br>
+                    Email: yadelnegash10@gmail.com
+                    <br>
+                    School: Quinnipiac University
+                    <br>
+                    Major: Computer Science
+                    <br>
+                </div>
+    
+                <div class="jumbotron" id="Divine">
+                    <img src="{{ url_for('static', filename='images/divine.png') }}"
+                          alt="about Divine image" id="Divine_image">
+                </div>
+    
+                <div class="jumbotron" id="AJ">
+                    <br>Name: AJ Mauney
+                    <br>
+                    Role: Back-end Developer
+                    <br>
+                    Email: barca.aj@gmail.com
+                    <br>
+                    School: Elon University
+                    <br>
+                    Major: Computer Science
+                    <br>
+                </div>
+    
+                <div class="jumbotron" id="Fad">
+                    <img src="{{ url_for('static', filename='images/Fad.png') }}"
+                          alt="about Fad image" id="Fad_image">
+                </div>
             </div>
 
-            <div class="jumbotron" id="Yadel">
-                <img src="{{ url_for('static', filename='images/yadel.png') }}"
-                      alt="about yadel image" id="yadel_image">
-                <p>Type something</p>
+            <div class="col-lg-6" id="right">
+                <div class="jumbotron" id="Isaac">
+                    <br> Name: Isaac Ayeyi Turkson
+                    <br>
+                    Role: Full Stack Developer
+                    <br>
+                    Email: iturkson@u.rochester.edu
+                    <br>
+                    School: University of Rochester
+                    <br>
+                    Major:Electrical and Computer Engineering
+                    <br>
+                </div>
 
-            </div>
+                <div class="jumbotron" id="Yadel">
+                    <img src="{{ url_for('static', filename='images/yadel.png') }}"
+                          alt="about yadel image" id="yadel_image">
+                </div>
 
-            <div class="jumbotron" id="Divine">
-                <img src="{{ url_for('static', filename='images/divine.png') }}"
-                      alt="about Divine image" id="Divine_image">
-                <p>Type something</p>
+                <div class="jumbotron" id="Divine">
+                    <br>Name: Divine Akinjiyan
+                    <br>
+                    Role: Front End
+                    <br>
+                    Email: divine.akinjiyan@gmail.com
+                    <br>
+                    School: Washington University
+                    <br>
+                    Major: Double Major For Math and Computer Science
+                    <br>
+                </div>
 
-            </div>
+                <div class="jumbotron" id="AJ">
+                    <img src="{{ url_for('static', filename='images/isaac.png') }}"
+                          alt="about AJ image" id="AJ_image">
+                </div>
 
-            <div class="jumbotron" id="AJ">
-                <img src="{{ url_for('static', filename='images/isaac.png') }}"
-                      alt="about AJ image" id="AJ_image">
-                <p>Type something</p>
-
-            </div>
-
-            <div class="jumbotron" id="Fad">
-                <img src="{{ url_for('static', filename='images/Fad.png') }}"
-                      alt="about Fad image" id="Fad_image">
-                <p>Type something</p>
-
+                <div class="jumbotron" id="Fad">
+                    <br>Name: Fadlalla Musa
+                    <br>
+                    Role: Full Stack Developer
+                    <br>
+                    Email: fadlalla2000@gmail.com
+                    <br>
+                    School: George Mason University
+                    <br>
+                    Major: Cyber security Engineering
+                    <br>
+                </div>  
             </div>
             
         </div>
