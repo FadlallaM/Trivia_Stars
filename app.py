@@ -128,7 +128,7 @@ def getFact():
     response = requests.get(url)
     data = response.json()
     fact = data['text']
-    facts = facts.replace(u'\xa0', u'')
+    facts = fact.replace(u'\xa0', u'')
     return fact
 
 def getManyFacts():
@@ -269,6 +269,8 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html')
+
+    
     
 if __name__ == '__main__':
     app.run(debug=True)
