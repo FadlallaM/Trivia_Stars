@@ -1,0 +1,62 @@
+body, html {
+	font-family: Poppins-Regular, sans-serif;
+    background-image: url('wallpaper.gif');
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Poppins-Regular, sans-serif;
+    color: #e37719;
+    text-decoration: none solid rgb(227, 119, 25);
+    text-align: center;
+}
+
+.navbar {
+    background-color: #2d0250;
+    padding: 0px;
+    border-radius: 25px;
+
+}
+
+#logo {
+    height: 90px;
+    width: 90px;
+    margin: -10px 56px -21px;
+}
+
+ul {
+    list-style-type: none;
+}
+  
+.fa {
+    font-size: 52px;
+    color: #b504e1;
+    margin: 7px 37px -2px
+}
+
+.fa:hover {
+    color: white;
+}
+
+li {
+    float: left;
+    height: 67px;
+    border-radius: 25px;
+    margin: 7px 2px -8px;
+}
+
+.tablestuff {
+    width: 75%;
+    margin: 40px 274px 40px 162px;
+}
+
+#positionimage {
+    width: 804px;
+    height: 268px;
+    margin: 120px 359px 20px 291px;
+}
+
+table, th, td {
+    border: 1px solid white;
+    width: 100px;
+}
+
