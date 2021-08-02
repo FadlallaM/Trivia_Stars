@@ -33,18 +33,19 @@
 
         <div class="navbar">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a class="active" href="#">Play</a></li>
+                <li><a  href="#"><i class="fa fa-home"></i></a></li>
+                <li id="info"><a href="/about"><i class="fa fa-info"></i></a></li>
+                <li><a href="#play"><i class="fa fa-trophy"></i></a></li>
             </ul>
 
             <div class="navbar-brand">
                 <figure>
-                  <a class="logo" href="/"><img src="{{ url_for('static', filename='images/logo.gif') }}"
+                  <a class="logo" href="#"><img src="{{ url_for('static', filename='images/logo.gif') }}"
                       alt="Trivia Stars' logo" id="logo"></a>
                 </figure>
             </div>
         </div>
+
 
         <div class="container-fluid" id="question">
             {{ Question }}
@@ -52,31 +53,28 @@
 
         <form name="answers_form" id="answers_id" method="POST">
             <input type="checkbox" id="answer1" name="answers" value="0">
-               <label for="answer1" id="answer1">
-                  <h1 id="options">A</h1> {{ answer1 }} 
-               </label><br>
-   
-               <input type="checkbox" id="answer2" name="answers" value="1">
-               <label for="answer2" id="answer2">
-                   <h1 id="options">B</h1>{{ answer2 }}
-               </label><br>
-   
-               <input type="checkbox" id="answer3" name="answers" value="2">
-               <label for="answer3" id="answer3"> 
-                   <h1 id="options">C</h1>{{ answer3 }}
-               </label><br>
-   
-               <input type="checkbox" id="answer4" name="answers" value="3">
-               <label for="answer4" id="answer4">
-                   <h1 id="options">D</h1>{{ answer4 }}
-               </label><br>
+            <label for="answer1" id="answer1">
+                <h1 id="options">A</h1> {{ answer1 }} 
+            </label><br>
 
-               <button type="submit" id="form_submit">NEXT</button>
+            <input type="checkbox" id="answer2" name="answers" value="1">
+            <label for="answer2" id="answer2">
+                <h1 id="options">B</h1>{{ answer2 }}
+            </label><br>
+
+            <input type="checkbox" id="answer3" name="answers" value="2">
+            <label for="answer3" id="answer3"> 
+                <h1 id="options">C</h1>{{ answer3 }}
+            </label><br>
+
+            <input type="checkbox" id="answer4" name="answers" value="3">
+            <label for="answer4" id="answer4">
+                <h1 id="options">D</h1>{{ answer4 }}
+            </label><br>
+
+            <button type="submit" id="form_submit">NEXT</button>
                
         </form>
-
-
-
 
 
     </body>
