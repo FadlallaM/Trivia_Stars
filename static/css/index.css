@@ -5,7 +5,6 @@ body {
     background-color: #2d0250;
     padding: 0px;
     border-radius: 25px;
-
 }
 
 audio {
@@ -16,6 +15,8 @@ audio {
     height: 90px;
     width: 90px;
     margin: -10px 56px -21px;
+    cursor: pointer;
+    
 }
 #logo_2 {
     height: 27rem;
