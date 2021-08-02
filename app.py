@@ -24,11 +24,11 @@ def user_input():
     global correct_answers
     global final_answers
     global amount
-    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'science', 'society_and_culture', 'sport_and_leisure']
+    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'society_and_culture', 'sport_and_leisure', 'geography']
     amount = request.form.get("amount")
     category = request.form.get("category")
     difficulty = request.form.get("difficulty")
-    
+
     # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
     if (category in categories_list):
         url = getNewUrl(amount,category)
@@ -67,7 +67,6 @@ def newToDict(json):
     answers = []
     final_answers = []
     temp_list = []
-    i = 0;
     for value in json:
         #print(value['question'])
         question_list.append(value['question'])
@@ -273,5 +272,3 @@ def about():
     
 if __name__ == '__main__':
     app.run(debug=True)
-
-#hello
