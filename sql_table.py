@@ -1,17 +1,22 @@
 from sqlalchemy import create_engine
 import os
 import pandas as pd
+from pandas.io import sql
+import warnings
+
+   
+database_name = "leaderboard"
+filetable_name = "leader_board.sql"
+table_name = 'leader_board'  
+
+#create sql if not exits 
+os.system('mysql -u root -pcodio -e "CREATE DATABASE IF NOT EXISTS '+database_name+';"')
+os.system("mysql -u root -pcodio "+database_name+" < " + filetable_name)
+engine = create_engine('mysql://root:codio@localhost/'+database_name+'?charset=utf8', encoding='utf-8')
+
+
 
 def addData_save(data):
-   
-  database_name = "leaderboard"
-  filetable_name = "leader_board.sql"
-  table_name = 'leader_board'  
-   
-  #create sql if not exits 
-  os.system('mysql -u root -pcodio -e "CREATE DATABASE IF NOT EXISTS '+database_name+';"')
-  os.system("mysql -u root -pcodio "+database_name+" < " + filetable_name)
-  engine = create_engine('mysql://root:codio@localhost/'+database_name+'?charset=utf8', encoding='utf-8')
 
   df = [] 
 
@@ -23,7 +28,7 @@ def addData_save(data):
 
   for player in data:
     nickname, score, time = player
-    df_i.loc[len(df_i.index)] = [str(id), nickname, score, time]
+    df_i.loc[len(df_i.index)] = [str(id), str(nickname), score, round(time, 4)]
    
     df.append(df_i)
     id+=1
@@ -35,7 +40,12 @@ def addData_save(data):
   os.system('mysqldump -u root -pcodio '+database_name+' > '+ filetable_name)
 
 
+def clearTables():
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        sql.execute('DROP TABLE IF EXISTS leader_board', engine)
 
+# testing = [['name1', '7', '5:00'], ['name2', '5', '2:20'], ['name3', '2', '5:25'], ['name4', '51', '51:20']]
+# addData_save(testing)
 
-#testing = [['name1', '7', '5:00'], ['name2', '5', '2:20'], ['name3', '2', '5:25'], ['name4', '51', '51:20']]
-#addData_save(testing)
+clearTables()
