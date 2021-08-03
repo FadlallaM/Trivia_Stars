@@ -68,7 +68,23 @@ socket.on('create', function(success) {
 $beginButton.on('click', async function() { 
     let reset_data = newData
     socket.emit('reset', reset_data)
-    window.location = '/quiz' + newData.room
+
+    var data = $startForm.serialize();
+
+    $.post( "/quiz" + newData, data );
+
+    /*$.ajax(
+        url: 
+        
+        dataType: "json",
+        /*success: function (resp) {
+            window.location.href = "/business/dashboard/";
+        },
+        error: function (resp) {
+        // console.log(resp.responseJSON);
+        displayErrorMessageLogin(resp.responseJSON);
+        }
+    );*/
 });
 
 

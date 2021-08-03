@@ -134,82 +134,32 @@ def leaderboard():
 
     return render_template('leaderboard.html')
 
-@app.route("/quiz<room>")
+@app.route("/quiz<room>", methods=["POST"])
 def quiz(room):
-    return render_template('quiz.html')
+    global amount_2
+    global nickname_2
 
-def is_admin(id, room):
-    return rooms[room] == id
+    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'society_and_culture', 'sport_and_leisure', 'geography']
+    amount_2 = request.form.get("amount")
+    category = request.form.get("category")
+    difficulty = request.form.get("difficulty")
+    nickname_2 = request.form.get("nickname")
+    print(nickname_2)
 
-@socketio.on('connection')
-def on_connect(socket):
-    print('user connected')
 
-@socketio.on('disconnect')
-def on_admin_disconnect():
-    print('user disconnected')
-    print(rooms)
-    for room in rooms:
-        if is_admin(request.sid, room):
-            print(room)
-            del rooms[room]
-    emit('leave')
+    # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
+    if (category in categories_list):
+        url = getNewUrl(amount_2,category)
+        Json = getNewJson(url)
+        correct_answers, final_answers, question_list = newToDict(Json)
 
-# only emitted by players
-
-@socketio.on('join')
-def on_join(data):
-    name = data['name']
-    room = data['room']
-    join_room(room)
-    emit('join', data, room=room)
-    print(f'{name} joined {room}')
-
-@socketio.on('buzz')
-def on_buzz(data):
-    name = data['name']
-    room = data['room']
-    emit('buzz', { 'name': name } , room=room)
-
-@socketio.on('exists')
-def exists(data):
-    room = data['room']
-    emit('exists', room in rooms)
-
-# only emitted by admin
-
-@socketio.on('create')
-def on_create(data):
-    room = data['room']
-    if (room in rooms or len(room) < 3):
-        emit('create', False)
     else:
-        join_room(room)
-        rooms[room] = request.sid
-        emit('create', True)
-        print(f'created room: {room}')
+        url = getUrl(amount_2, category,difficulty)
+        Json = getJson(url)
+        correct_answers, final_answers, question_list = toDict(Json)
+    
 
-@socketio.on('reset')
-def on_reset(data):
-    room = data['room']
-    #res = data['res']
-    if is_admin(request.sid, room):
-        emit('reset', room=room)
-
-#@socketio.on('begin')
-#def on_begin(data):
-    #room = data['room']
-    #if is_admin(request.sid, room):
-        #emit('begin', room=room)
-
-@socketio.on('score')
-def on_score(data):
-    leaderboard = data['leaderboard']
-    room = data['room']
-    if is_admin(request.sid, room):
-        emit('score', { 'leaderboard' : leaderboard }, room=room)
-
-
+    return quiz(correct_answers, final_answers, question_list)
 
 
 
@@ -289,11 +239,8 @@ def toDict(json_data):
     return correct_answers, final_answers, question_list
 
 
-
-
-
-
 def quiz(correct_answers, final_answers, question_list):
+    print("camehere")
     #start stopwatch
     global start_time
     start_time = time.time()
@@ -316,6 +263,79 @@ def quiz(correct_answers, final_answers, question_list):
 next_que = 0
 score = 0
 
-            
+
+
+def is_admin(id, room):
+    return rooms[room] == id
+
+@socketio.on('connection')
+def on_connect(socket):
+    print('user connected')
+
+@socketio.on('disconnect')
+def on_admin_disconnect():
+    print('user disconnected')
+    print(rooms)
+    for room in rooms:
+        if is_admin(request.sid, room):
+            print(room)
+            del rooms[room]
+    emit('leave')
+
+# only emitted by players
+
+@socketio.on('join')
+def on_join(data):
+    name = data['name']
+    room = data['room']
+    join_room(room)
+    emit('join', data, room=room)
+    print(f'{name} joined {room}')
+
+@socketio.on('buzz')
+def on_buzz(data):
+    name = data['name']
+    room = data['room']
+    emit('buzz', { 'name': name } , room=room)
+
+@socketio.on('exists')
+def exists(data):
+    room = data['room']
+    emit('exists', room in rooms)
+
+# only emitted by admin
+
+@socketio.on('create')
+def on_create(data):
+    room = data['room']
+    if (room in rooms or len(room) < 3):
+        emit('create', False)
+    else:
+        join_room(room)
+        rooms[room] = request.sid
+        emit('create', True)
+        print(f'created room: {room}')
+
+@socketio.on('reset')
+def on_reset(data):
+    room = data['room']
+    #res = data['res']
+    if is_admin(request.sid, room):
+        emit('reset', room=room)
+
+#@socketio.on('begin')
+#def on_begin(data):
+    #room = data['room']
+    #if is_admin(request.sid, room):
+        #emit('begin', room=room)
+
+@socketio.on('score')
+def on_score(data):
+    leaderboard = data['leaderboard']
+    room = data['room']
+    if is_admin(request.sid, room):
+        emit('score', { 'leaderboard' : leaderboard }, room=room)
+
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)
