@@ -60,3 +60,52 @@ label {
     height: 50px;
     background-color: #2d0250;
 }
+
+.container-fluid {
+    width: 1282px;
+    height: 231px;
+    border-radius: 25px;
+    background-color: rgba(29, 185, 209, 0.43);
+    background-size: cover;
+    font-family: Poppins-Regular, sans-serif;
+    color: #e37719;
+    text-decoration: none solid rgb(227, 119, 25);
+    text-align: center;
+}
+
+label {
+    width: 63%;
+    height: 115px;
+    border-radius: 20px;
+    text-align: center;
+    background-color: rgb(214, 59, 251, 0.43);
+    background-size: cover;
+    margin: 10px 299px 0px;
+}
+label:hover {
+    cursor: pointer;
+    background-color: rgba(29, 185, 209, 0.43);
+}
+button {
+    width: 30%;
+    height: 48px;
+    text-align: center;
+    margin: 15px 592px 15px;
+    background-color: rgba(29, 185, 209, 0.43);
+    border-radius: 25px;
+}
+button:hover {
+    cursor: pointer;
+    background-color: rgb(214, 59, 251, 0.43);
+}
+
+#options {
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+img {
+    width: 90px;
+    height: 90px;
+    margin: 10px 10px 10px -805px;
+}
