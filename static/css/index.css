@@ -120,6 +120,33 @@ li {
     border-radius: 20px;
 }
 
+#panel {
+    display: none;
+    width: 47rem;
+    height: 37rem;
+    background-color: #2d0250;
+    z-index: 2;
+    opacity: 0.8;
+    margin: -592px 392px 0px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+.panel_label {
+    font-size: 20px;
+    margin: 10px 10px 10px;
+}
+
+#begin {
+    width: 50%;
+    border-radius: 25px;
+    text-align: center;
+}
+#begin:hover{
+    background-color:#e83e8c;
+    cursor: pointer;
+}
 form {
     width: 790px;
     height: 289px;

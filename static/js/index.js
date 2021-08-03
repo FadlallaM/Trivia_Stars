@@ -36,27 +36,47 @@ function off_2() {
 
 var socket = io()
 var $startForm = $('#create_game_id')
+var $closebutton = $('#closebtn')
 var $newRoomField = $('#createCodeInput')
-var $joinForm = $('#join_game_id')
-var $roomField = $('#gameCodeInput')
+var $beginButton = $('#begin')
+var $panel = $('#panel')
 var newData = { room: null }
-var data = { room: null }
+
+
+$('body').addClass('body--admin')
+
+
 
 $startForm.on('submit', function(event) {
     event.preventDefault()
-    data.room = $newRoomField.val()
+    newData.room = $newRoomField.val()
     
-    socket.emit('create', data)
+    socket.emit('create', newData)
 });
 
 socket.on('create', function(success) {
     if (success) {
-        window.location = '/quiz' + newData.room
+        $closebutton.hide()
+        $startForm.hide()
+        $panel.show()
     }
     else {
-      alert('That room is already taken')
+        alert('That room is taken')
     }
 });
+
+$beginButton.on('click', async function() { 
+    let reset_data = newData
+    socket.emit('reset', reset_data)
+    window.location = '/quiz' + newData.room
+});
+
+
+//Join game session
+var $joinForm = $('#join_game_id')
+var $roomField = $('#gameCodeInput')
+var data = { room: null }
+$('body').addClass('center')
 
 $joinForm.on('submit', function(event) {
   event.preventDefault()

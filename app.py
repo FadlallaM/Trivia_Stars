@@ -40,8 +40,10 @@ def on_connect(socket):
 @socketio.on('disconnect')
 def on_admin_disconnect():
     print('user disconnected')
+    print(rooms)
     for room in rooms:
         if is_admin(request.sid, room):
+            print(room)
             del rooms[room]
     emit('leave')
 
@@ -82,15 +84,15 @@ def on_create(data):
 @socketio.on('reset')
 def on_reset(data):
     room = data['room']
-    res = data['res']
+    #res = data['res']
     if is_admin(request.sid, room):
-        emit('reset', { 'res': res }, room=room)
+        emit('reset', room=room)
 
-@socketio.on('begin')
-def on_begin(data):
-    room = data['room']
-    if is_admin(request.sid, room):
-        emit('begin', room=room)
+#@socketio.on('begin')
+#def on_begin(data):
+    #room = data['room']
+    #if is_admin(request.sid, room):
+        #emit('begin', room=room)
 
 @socketio.on('score')
 def on_score(data):

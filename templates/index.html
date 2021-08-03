@@ -168,7 +168,7 @@
         <div id="overlay_2" class="container-fluid">
             <i class="fa fa-close" id="closebtn" onclick="off_2()"></i>
 
-            <form name="join_game_form" id= "join_game_id">
+            <form name="join_game_form" id= "join_game_id" class="center">
                 <label>Nickname: </label><br>
                 <input type="text" name="nickname" data-error="Enter your nickname" placeholder="Nickname" required><br>
 
@@ -180,6 +180,15 @@
             </form>
 
             <a id="random_game" href="/join/random">Join Random Game</a>
+        </div>
+
+        <div class="container-fluid" id="panel">
+            <div class="panel__header">
+                <div class="panel__label">Players &mdash; <span id="roomCount"></span></div>
+                <div>
+                  <button id="begin">Begin</button>
+                </div>
+            </div>
         </div>
         
 
