@@ -1,6 +1,9 @@
 from sqlalchemy import create_engine
 import os
 import pandas as pd
+from pandas.io import sql
+import warnings
+
 
 def addData_save(data):
    
@@ -34,7 +37,10 @@ def addData_save(data):
     df_name.to_sql(table_name, con=engine, if_exists='replace', index=False)
   os.system('mysqldump -u root -pcodio '+database_name+' > '+ filetable_name)
 
-
+def clearTables():
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        sql.execute('DROP TABLE IF EXISTS leaderboard', engine)
 
 
 #testing = [['name1', '7', '5:00'], ['name2', '5', '2:20'], ['name3', '2', '5:25'], ['name4', '51', '51:20']]

@@ -2,23 +2,16 @@ from flask import Flask, render_template, redirect, request
 import requests
 import random
 import html
+from sql_table import addData_save
+import time
 
 app = Flask(__name__)
 
-'''
+
 app.config['SECRET_KEY'] = '51'
 
 
-@app.route("/quiz")
-def quiz():
-
-    return render_template("quiz.html")
-
-
-question_list = []
-
-
-@app.route("/user/input", methods=["POST"])
+@app.route("/solo/game", methods=["POST"])
 def user_input():
     global question_list
     global correct_answers
@@ -124,7 +117,6 @@ def toDict(json_data):
 
 
 @app.route("/")
-@app.route("/home")
 def home():
     global next_que
     global question_list
@@ -132,18 +124,20 @@ def home():
     global final_answers
     global amount
     global score
+    global database_list
     next_que = 0
     amount = 0
     score = 0
     question_list = []
     final_answers = []
     correct_answers = []
-    return render_template("home.html")
+    database_list = []
+    return render_template("index.html")
 
 
-@app.route("/quiz")
-def quiz_2():
-    return render_template("quiz.html")
+# @app.route("/quiz")
+# def quiz_2():
+#     return render_template("quiz.html")
 
 
 @app.route("/nickname", methods=["POST"])
@@ -153,27 +147,29 @@ def nickname_page():
     return render_template("info.html")
 
 
-@app.route("/info")
-def info():
-    return render_template("info.html")
+# @app.route("/info")
+# def info():
+#     return render_template("info.html")
 
 
 def quiz(correct_answers, final_answers, question_list):
     #start stopwatch
+    global start_time
+    start_time = time.time()
     question_name = question_list[0]
 
-        return render_template(
-            'quiz.html',
-            question='1) ' +
-            html.unescape(question_name),
-            answer1=html.unescape(
-                final_answers[0][0]),
-            answer2=html.unescape(
-                final_answers[0][1]),
-            answer3=html.unescape(
-                final_answers[0][2]),
-            answer4=html.unescape(
-                final_answers[0][3]))
+    return render_template(
+        'quiz.html',
+        question='1) ' +
+        html.unescape(question_name),
+        answer1=html.unescape(
+            final_answers[0][0]),
+        answer2=html.unescape(
+            final_answers[0][1]),
+        answer3=html.unescape(
+            final_answers[0][2]),
+        answer4=html.unescape(
+            final_answers[0][3]))
 
 
 next_que = 0
@@ -202,53 +198,56 @@ def next_question():
         link = "/display_score/" + str(score) + str(amount)
         return redirect(link)
         # print(score)
-        # return home()
+        
     next_que += 1
     question_name = question_list[next_que]
-    # print(question_name)
-
-    # print(next_que)
-    # print('AMT: ', amount)
-
-   # if question_type == 'multiple':
-        #print(final_answers)
-        return render_template(
-            'quiz.html',
-            question=str(
-                next_que + 1) + ") " + html.unescape(question_name),
-            answer1=html.unescape(
-                final_answers[next_que][0]),
-            answer2=html.unescape(
-                final_answers[next_que][1]),
-            answer3=html.unescape(
-                final_answers[next_que][2]),
-            answer4=html.unescape(
-                final_answers[next_que][3]))
+    
+    return render_template(
+        'quiz.html',
+        question=str(
+            next_que + 1) + ") " + html.unescape(question_name),
+        answer1=html.unescape(
+            final_answers[next_que][0]),
+        answer2=html.unescape(
+            final_answers[next_que][1]),
+        answer3=html.unescape(
+            final_answers[next_que][2]),
+        answer4=html.unescape(
+            final_answers[next_que][3]))
 
 
 
-@app.route("/display_score/<score><amount>")
-def display_score(score, amount):
-    global nickname
-    #time = stop stopwatch
-    #addToDB(nickname,score,time)
-    try:
-        return render_template(
-            "score.html",
-            nickname=nickname,
-            score=score,
-            amount=amount)
-    except BaseException:
-        return render_template(
-            "score.html",
-            nickname="User",
-            score=score,
-            amount=amount)
+# @app.route("/display_score/<score><amount>")
+# def display_score(score, amount):
+#     global nickname
+#     global start_time
+#     global end_time
+#     global database_list
+#     end_time = time.time()
+#     total_time = end_time-start_time
+#     addToData = []
+#     addToData.append(nickname,score,total_time)
+#     database_list += addToData
+#     addData_save(database_list)
+#     #time = stop stopwatch
+#     #addToDB(nickname,score,time)
+#     try:
+#         return render_template(
+#             "score.html",
+#             nickname=nickname,
+#             score=score,
+#             amount=amount)
+#     except BaseException:
+#         return render_template(
+#             "score.html",
+#             nickname="User",
+#             score=score,
+#             amount=amount)
 
-''' 
-@app.route("/")
-def home():
-    return render_template('index.html')
+
+# @app.route("/")
+# def home():
+#     return render_template('index.html')
 
 @app.route("/about")
 def about():
@@ -257,11 +256,23 @@ def about():
     
 @app.route("/leaderboard")
 def leaderboard():
+    # global nickname
+    # global start_time
+    # global end_time
+    # global database_list
+    # end_time = time.time()
+    # total_time = end_time-start_time
+    # addToData = []
+    # addToData.append(nickname,score,total_time)
+    # database_list += addToData
+    # addData_save(database_list)
+    # #time = stop stopwatch
+    # #addToDB(nickname,score,time)
     return render_template('leaderboard.html')
 
-@app.route("/quiz")
-def quiz():
-    return render_template('quiz.html')
+# @app.route("/quiz")
+# def quiz():
+#     return render_template('quiz.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
