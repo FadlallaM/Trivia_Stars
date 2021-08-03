@@ -105,20 +105,11 @@ if __name__ == '__main__':
 
 
 
-'''
+
 app.config['SECRET_KEY'] = '51'
 
 
-@app.route("/quiz")
-def quiz():
-
-    return render_template("quiz.html")
-
-
-question_list = []
-
-
-@app.route("/user/input", methods=["POST"])
+@app.route("/solo/game", methods=["POST"])
 def user_input():
     global question_list
     global correct_answers
@@ -224,7 +215,6 @@ def toDict(json_data):
 
 
 @app.route("/")
-@app.route("/home")
 def home():
     global next_que
     global question_list
@@ -232,18 +222,20 @@ def home():
     global final_answers
     global amount
     global score
+    global database_list
     next_que = 0
     amount = 0
     score = 0
     question_list = []
     final_answers = []
     correct_answers = []
-    return render_template("home.html")
+    database_list = []
+    return render_template("index.html")
 
 
-@app.route("/quiz")
-def quiz_2():
-    return render_template("quiz.html")
+# @app.route("/quiz")
+# def quiz_2():
+#     return render_template("quiz.html")
 
 
 @app.route("/nickname", methods=["POST"])
@@ -253,27 +245,29 @@ def nickname_page():
     return render_template("info.html")
 
 
-@app.route("/info")
-def info():
-    return render_template("info.html")
+# @app.route("/info")
+# def info():
+#     return render_template("info.html")
 
 
 def quiz(correct_answers, final_answers, question_list):
     #start stopwatch
+    global start_time
+    start_time = time.time()
     question_name = question_list[0]
 
-        return render_template(
-            'quiz.html',
-            question='1) ' +
-            html.unescape(question_name),
-            answer1=html.unescape(
-                final_answers[0][0]),
-            answer2=html.unescape(
-                final_answers[0][1]),
-            answer3=html.unescape(
-                final_answers[0][2]),
-            answer4=html.unescape(
-                final_answers[0][3]))
+    return render_template(
+        'quiz.html',
+        question='1) ' +
+        html.unescape(question_name),
+        answer1=html.unescape(
+            final_answers[0][0]),
+        answer2=html.unescape(
+            final_answers[0][1]),
+        answer3=html.unescape(
+            final_answers[0][2]),
+        answer4=html.unescape(
+            final_answers[0][3]))
 
 
 next_que = 0
@@ -302,7 +296,7 @@ def next_question():
         link = "/display_score/" + str(score) + str(amount)
         return redirect(link)
         # print(score)
-        # return home()
+        
     next_que += 1
     question_name = question_list[next_que]
     # print(question_name)
@@ -344,5 +338,3 @@ def display_score(score, amount):
             nickname="User",
             score=score,
             amount=amount)
-
-'''
