@@ -74,3 +74,39 @@ table, th, td {
     color: black;
     margin: 8px 27px 6px;
 }
+
+#first_place{
+    width: 40%;
+    height: 100%;
+    margin: 138px 500px -46px 706px;
+}
+
+#second_place{
+    width: 40%;
+    height: 100%;
+    margin: -75px 500px -46px 422px;
+}
+
+#third_place{
+    width: 40%;
+    height: 100%;
+    margin: -114px 500px -46px 985px;
+}
+
+.memes1{
+    width: 30%;
+    height: 200px;
+
+}
+
+/* .memes2{
+    width: 30%;
+    height: 200px;
+
+}
+
+.memes3{
+    width: 30%;
+    height: 200px;
+
+} */
