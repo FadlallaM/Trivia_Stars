@@ -1,0 +1,112 @@
+body {
+    background: url('/static/images/wallpaper.gif');
+    font-family: Poppins-Regular, sans-serif;
+}
+.navbar {
+    background-color: #2d0250;
+    padding: 0px;
+    border-radius: 25px;
+}
+
+#logo {
+    height: 90px;
+    width: 90px;
+    margin: -10px 56px -21px;
+    cursor: pointer;
+    
+}
+input {
+    display: none;
+}
+
+ul {
+    list-style-type: none;
+}
+  
+.fa {
+    font-size: 52px;
+    color: #b504e1;
+    margin: 7px 37px -2px
+}
+
+.fa:hover {
+    color: white;
+}
+
+li {
+    float: left;
+    height: 67px;
+    border-radius: 25px;
+    margin: 7px 2px -8px;
+}
+
+
+#info {
+    border-radius: 50%;
+    background-color: #b504e1;
+    width: 73px;
+    height: 66px;
+    padding-right: 14px;
+    margin-right: -1px;
+}
+
+.fa-info {
+    color: black;
+    margin: 8px 27px 6px;
+}
+
+label {
+    width: 50px;
+    height: 50px;
+    background-color: #2d0250;
+}
+
+.container-fluid {
+    width: 1282px;
+    height: 231px;
+    border-radius: 25px;
+    background-color: rgba(29, 185, 209, 0.43);
+    background-size: cover;
+    font-family: Poppins-Regular, sans-serif;
+    color: #e37719;
+    text-decoration: none solid rgb(227, 119, 25);
+    text-align: center;
+}
+
+label {
+    width: 63%;
+    height: 115px;
+    border-radius: 20px;
+    text-align: center;
+    background-color: rgb(214, 59, 251, 0.43);
+    background-size: cover;
+    margin: 10px 299px 0px;
+}
+label:hover {
+    cursor: pointer;
+    background-color: rgba(29, 185, 209, 0.43);
+}
+
+button {
+    width: 30%;
+    height: 48px;
+    text-align: center;
+    margin: 15px 592px 15px;
+    background-color: rgba(29, 185, 209, 0.43);
+    border-radius: 25px;
+}
+button:hover {
+    cursor: pointer;
+    background-color: rgb(214, 59, 251, 0.43);
+}
+
+#options {
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+img {
+    width: 90px;
+    height: 90px;
+    margin: 10px 10px 10px -805px;
+}

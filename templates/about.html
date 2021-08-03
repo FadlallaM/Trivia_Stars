@@ -24,11 +24,11 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js" integrity="sha512-RdSPYh1WA6BF0RhpisYJVYkOyTzK4HwofJ3Q7ivt/jkpW6Vc8AurL1R+4AUcvn9IwEKAPm/fk7qFZW3OuiUDeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
-
       <!-- Custom styles for this template -->
       <link rel="stylesheet" href="{{ url_for('static',    filename='css/about.css') }}">
     </head>
-
+    <script src="{{ url_for('static',  filename='js/about.js') }}"></script>
+       
     <body>
         <div class="navbar">
             <ul>
@@ -52,7 +52,7 @@
 
         <div class="container-fluid" id="random_facts">
             <h1>Random Facts</h1>
-            <p id="random_fact">write stuff here</p>
+            <p id="random_fact"></p>
         </div>
         
         <h1>Meet The Team</h1>

@@ -6,9 +6,9 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta name="description" content="">
       <meta name="author" content="">
-      <link rel="icon" href="../../../../favicon.ico">
+      <link rel="icon" href="logo_2.jpeg">
 
-      <title>Trivia Stars</title>
+      <title>Quiz</title>
 
       <!-- Bootstrap core CSS -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -33,52 +33,49 @@
 
         <div class="navbar">
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a class="active" href="#">Play</a></li>
+                <li><a  href="/"><i class="fa fa-home"></i></a></li>
+                <li id="info"><a href="/about"><i class="fa fa-info"></i></a></li>
+                <li><a href="#question"><i class="fa fa-trophy"></i></a></li>
             </ul>
 
             <div class="navbar-brand">
                 <figure>
-                  <a class="logo" href="/"><img src="{{ url_for('static', filename='images/logo.gif') }}"
+                  <a class="logo" href="#"><img src="{{ url_for('static', filename='images/logo.gif') }}"
                       alt="Trivia Stars' logo" id="logo"></a>
                 </figure>
             </div>
         </div>
 
+
         <div class="container-fluid" id="question">
-            {{ Question }}
+            <h3>{{ question }}</h3>
         </div>
 
-        <form name="answers_form" id="answers_id" method="POST">
-            <input type="checkbox" id="answer1" name="answers" value="0">
-               <label for="answer1" id="answer1">
-                  <h1 id="options">A</h1> {{ answer1 }} 
-               </label><br>
-   
-               <input type="checkbox" id="answer2" name="answers" value="1">
-               <label for="answer2" id="answer2">
-                   <h1 id="options">B</h1>{{ answer2 }}
-               </label><br>
-   
-               <input type="checkbox" id="answer3" name="answers" value="2">
-               <label for="answer3" id="answer3"> 
-                   <h1 id="options">C</h1>{{ answer3 }}
-               </label><br>
-   
-               <input type="checkbox" id="answer4" name="answers" value="3">
-               <label for="answer4" id="answer4">
-                   <h1 id="options">D</h1>{{ answer4 }}
-               </label><br>
-
-               <button type="submit" id="form_submit">NEXT</button>
-               
-        </form>
-
-
-
-
-
+        <div class = "formstuff">
+            <form name="answers_form" id="answers_id" method="POST" action="/next/question">
+                <input type="checkbox" id="answer1" name="answers" value="0">
+                <label for="answer1" id="answer1">
+                    <img src = "{{ url_for('static', filename='images/a.png') }}"> {{ answer1 }} 
+                </label><br>
+    
+                <input type="checkbox" id="answer2" name="answers" value="1">
+                <label for="answer2" id="answer2">
+                    <img src = "{{ url_for('static', filename='images/b.png') }}"> {{ answer2 }}
+                </label><br>
+    
+                <input type="checkbox" id="answer3" name="answers" value="2">
+                <label for="answer3" id="answer3"> 
+                    <img src = "{{ url_for('static', filename='images/c.png') }}"> {{ answer3 }}
+                </label><br>
+    
+                <input type="checkbox" id="answer4" name="answers" value="3">
+                <label for="answer4" id="answer4">
+                    <img src = "{{ url_for('static', filename='images/d.png') }}"> {{ answer4 }}
+                </label><br>
+    
+                <button type="submit" id="form_submit">NEXT</button>     
+            </form>
+        </div>
     </body>
 
 </html>

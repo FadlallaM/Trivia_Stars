@@ -1,34 +1,53 @@
 from flask import Flask, render_template, redirect, request
+from flask_socketio import SocketIO, emit, join_room
+import os
 import requests
 import random
 import html
+import time
 
 app = Flask(__name__)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
+socketio = SocketIO(app, cors_allowed_origins="*")
+socketio.init_app(app)
 
-'''
-app.config['SECRET_KEY'] = '51'
+rooms = {}
 
-
-@app.route("/quiz")
-def quiz():
-
-    return render_template("quiz.html")
-
-
-question_list = []
-
-
-@app.route("/user/input", methods=["POST"])
-def user_input():
+@app.route("/")
+def home():
+    print('ON HOME PAGE')
+    global next_que
     global question_list
     global correct_answers
     global final_answers
     global amount
-    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'science', 'society_and_culture', 'sport_and_leisure']
+    global score
+    global database_list
+    global played_solo
+    global nickname
+    played_solo = False
+    next_que = 0
+    amount = 0
+    score = 0
+    question_list = []
+    final_answers = []
+    correct_answers = []
+    database_list = []
+    return render_template("index.html")
+
+@app.route("/solo/game", methods=["POST"])
+def user_input():
+    global amount
+    global nickname
+    played_solo = True
+    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'society_and_culture', 'sport_and_leisure', 'geography']
     amount = request.form.get("amount")
     category = request.form.get("category")
     difficulty = request.form.get("difficulty")
-    # typeQ = request.form.get("type")
+    nickname = request.form.get("nickname")
+    print(nickname)
+
 
     # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
     if (category in categories_list):
@@ -44,8 +63,158 @@ def user_input():
 
     return quiz(correct_answers, final_answers, question_list)
 
+@app.route('/next/question', methods=["POST"])
+def next_question():
+    global next_que
+    global question_list
+    global correct_answers
+    global final_answers
+    #global amount
+    global score
+
+    answer = request.form.get("answers")
+
+    if(final_answers[next_que][int(answer)] == correct_answers[next_que]):
+        print(final_answers[next_que][int(answer)])
+        print(correct_answers[next_que])
+        score += 1
+    
+    print('NEXT QUE: ', next_que)
+    print('AMOUNT ', amount)
+    if int(next_que + 1) == int(amount):
+        print('NEXT QUE: in if ', next_que)
+        print('\n\n\nLAST QUESTION\n\n\n\n')
+        link = "/display_score/" + str(score) + str(amount)
+        return redirect(link)
+        # print(score)
+        
+    next_que += 1
+    print('SHOULD START AT 1', next_que)
+    print('final answers: ')
+    print(final_answers)
+    question_name = question_list[next_que]
+
+    return render_template(
+        'quiz.html',
+        question=str(
+        next_que + 1) + ") " + html.unescape(question_name),
+        answer1=html.unescape(
+        final_answers[next_que][0]),
+        answer2=html.unescape(
+        final_answers[next_que][1]),
+        answer3=html.unescape(
+        final_answers[next_que][2]),
+        answer4=html.unescape(
+        final_answers[next_que][3]))
+    
+@app.route("/display_score/<score><amount>")
+def display_score(score, amount):
+    global nickname
+    #time = stop stopwatch
+    #addToDB(nickname,score,time)
+    try:
+        return render_template(
+            "score.html",
+            Nickname=nickname,
+            score=score,
+            amount=amount)
+    except BaseException:
+        return render_template(
+            "score.html",
+            Nickname="User",
+            score=score,
+            amount=amount)
+
+@app.route("/about")
+def about():
+    return render_template('about.html')
+
+@app.route("/leaderboard")
+def leaderboard():
+
+    return render_template('leaderboard.html')
+
+@app.route("/quiz<room>")
+def quiz(room):
+    return render_template('quiz.html')
+
+def is_admin(id, room):
+    return rooms[room] == id
+
+@socketio.on('connection')
+def on_connect(socket):
+    print('user connected')
+
+@socketio.on('disconnect')
+def on_admin_disconnect():
+    print('user disconnected')
+    print(rooms)
+    for room in rooms:
+        if is_admin(request.sid, room):
+            print(room)
+            del rooms[room]
+    emit('leave')
+
+# only emitted by players
+
+@socketio.on('join')
+def on_join(data):
+    name = data['name']
+    room = data['room']
+    join_room(room)
+    emit('join', data, room=room)
+    print(f'{name} joined {room}')
+
+@socketio.on('buzz')
+def on_buzz(data):
+    name = data['name']
+    room = data['room']
+    emit('buzz', { 'name': name } , room=room)
+
+@socketio.on('exists')
+def exists(data):
+    room = data['room']
+    emit('exists', room in rooms)
+
+# only emitted by admin
+
+@socketio.on('create')
+def on_create(data):
+    room = data['room']
+    if (room in rooms or len(room) < 3):
+        emit('create', False)
+    else:
+        join_room(room)
+        rooms[room] = request.sid
+        emit('create', True)
+        print(f'created room: {room}')
+
+@socketio.on('reset')
+def on_reset(data):
+    room = data['room']
+    #res = data['res']
+    if is_admin(request.sid, room):
+        emit('reset', room=room)
+
+#@socketio.on('begin')
+#def on_begin(data):
+    #room = data['room']
+    #if is_admin(request.sid, room):
+        #emit('begin', room=room)
+
+@socketio.on('score')
+def on_score(data):
+    leaderboard = data['leaderboard']
+    room = data['room']
+    if is_admin(request.sid, room):
+        emit('score', { 'leaderboard' : leaderboard }, room=room)
+
+
+
+
 
 def getNewUrl(amount,category):
+    print('MADE IT TO GET NEW URL')
     base_url = 'https://trivia.willfry.co.uk/api/questions?'
     final_url = base_url + 'limit=' + str(amount)
     # print('before, ', final_url)
@@ -62,27 +231,23 @@ def getNewJson(url):
 
 
 def newToDict(json):
-    question_list = []
-    correct_list = []
     correct = []
     answers = []
-    final_answers = []
     temp_list = []
-    i = 0;
     for value in json:
         #print(value['question'])
         question_list.append(value['question'])
-        correct_list.append(value['correctAnswer'])
+        correct_answers.append(value['correctAnswer'])
         correct = value['correctAnswer']
         # Grabs only 3 incorrect answers to make sure corect answer will always be on screen
         answers = value['incorrectAnswers'][:3]
         answers.append(correct)
         random.shuffle(answers)
         final_answers.append(answers)
-    return correct_list, final_answers, question_list
+    return correct_answers, final_answers, question_list
 
 
-def getUrl(amount, category, difficulty, typeQ):
+def getUrl(amount, category, difficulty):
     Base_url = 'https://opentdb.com/api.php?amount=' + str(amount)
     final_url = Base_url
     # categoryA
@@ -92,6 +257,8 @@ def getUrl(amount, category, difficulty, typeQ):
     # difficulty
     if difficulty != 'default_d':
         final_url = final_url + '&difficulty=' + str(difficulty)
+    
+    final_url = final_url + '&type=multiple'
 
     return final_url
 
@@ -103,16 +270,13 @@ def getJson(final_url):
 
 
 def toDict(json_data):
-    question_list = []
-    correct_list = []
     correct = []
     answers = []
-    final_answers = []
     for value in json_data['results']:
         # print(value)
         # questions.append(value['question'])
         question_list.append(value['question'])
-        correct_list.append(value['correct_answer'])
+        correct_answers.append(value['correct_answer'])
         correct = value['correct_answer']
         answers = value['incorrect_answers']
         answers.append(correct)
@@ -122,184 +286,36 @@ def toDict(json_data):
     # print('f answers ', final_answers)
     # print('c list' , correct_list)
 
-    return correct_list, final_answers, question_list
+    return correct_answers, final_answers, question_list
 
 
-def getFact():
-    url = 'https://uselessfacts.jsph.pl/random.json?language=en'
-    response = requests.get(url)
-    data = response.json()
-    fact = data['text']
-    facts = facts.replace(u'\xa0', u'')
-    return fact
-
-def getManyFacts():
-    fact = []
-    url = 'https://uselessfacts.jsph.pl/random.json?language=en'
-    for i in range(10):
-        response = requests.get(url)
-        data = response.json()
-        facts = data['text']
-        facts = facts.replace(u'\xa0', u'')
-        fact.append(facts)
-    return fact
 
 
-@app.route("/")
-@app.route("/home")
-def home():
-    global next_que
-    global question_list
-    global correct_answers
-    global final_answers
-    global amount
-    global score
-    next_que = 0
-    amount = 0
-    score = 0
-    question_list = []
-    final_answers = []
-    correct_answers = []
-    return render_template("home.html")
-
-
-@app.route("/quiz")
-def quiz_2():
-    return render_template("quiz.html")
-
-
-@app.route("/nickname", methods=["POST"])
-def nickname_page():
-    global nickname
-    nickname = request.form.get("nickname")
-    return render_template("info.html")
-
-
-@app.route("/info")
-def info():
-    return render_template("info.html")
 
 
 def quiz(correct_answers, final_answers, question_list):
-    # redirect("/quiz")
-    # question_type = list(question_list.values())[0]
-    # print(question_type)
-    # print(next(iter(question_list)))
+    #start stopwatch
+    global start_time
+    start_time = time.time()
     question_name = question_list[0]
 
-    #if question_type == 'multiple':
-        return render_template(
-            'quiz.html',
-            question='1) ' +
-            html.unescape(question_name),
-            answer1=html.unescape(
-                final_answers[0][0]),
-            answer2=html.unescape(
-                final_answers[0][1]),
-            answer3=html.unescape(
-                final_answers[0][2]),
-            answer4=html.unescape(
-                final_answers[0][3]))
-
-    # if question_type == 'boolean':
-    #     return render_template(
-    #         "quiz.html",
-    #         question='1) ' +
-    #         html.unescape(question_name),
-    #         answer1='True',
-    #         answer2='False')
+    return render_template(
+        'quiz.html',
+        question='1) ' +
+        html.unescape(question_name),
+        answer1=html.unescape(
+            final_answers[0][0]),
+        answer2=html.unescape(
+            final_answers[0][1]),
+        answer3=html.unescape(
+            final_answers[0][2]),
+        answer4=html.unescape(
+            final_answers[0][3]))
 
 
 next_que = 0
 score = 0
 
-
-@app.route('/next/question', methods=["POST"])
-def next_question():
-    global next_que
-    global question_list
-    global correct_answers
-    global final_answers
-    global amount
-    global score
-
-    answer = request.form.get("answers")
-
-    # print('outside', final_answers[next_que][int(answer)])
-    # print('outside', correct_answers[next_que])
-    if(final_answers[next_que][int(answer)] == correct_answers[next_que]):
-        print(final_answers[next_que][int(answer)])
-        print(correct_answers[next_que])
-        score += 1
-
-    if int(next_que + 1) == int(amount):
-        print('\n\n\nLAST QUESTION\n\n\n\n')
-        link = "/display_score/" + str(score) + str(amount)
-        return redirect(link)
-        # print(score)
-        # return home()
-    next_que += 1
-    #question_type = list(question_list.values())[next_que]
-    question_name = question_list[next_que]
-    # print(question_name)
-
-    # print(next_que)
-    # print('AMT: ', amount)
-
-   # if question_type == 'multiple':
-        #print(final_answers)
-        return render_template(
-            'quiz.html',
-            question=str(
-                next_que + 1) + ") " + html.unescape(question_name),
-            answer1=html.unescape(
-                final_answers[next_que][0]),
-            answer2=html.unescape(
-                final_answers[next_que][1]),
-            answer3=html.unescape(
-                final_answers[next_que][2]),
-            answer4=html.unescape(
-                final_answers[next_que][3]))
-
-    # if question_type == 'boolean':
-    #     print(final_answers)
-    #     return render_template(
-    #         "quiz.html",
-    #         question=str(
-    #             next_que +
-    #             1) +
-    #         ") " +
-    #         html.unescape(question_name),
-    #         answer1='True',
-    #         answer2='False')
-
-
-@app.route("/display_score/<score><amount>")
-def display_score(score, amount):
-    global nickname
-    try:
-        return render_template(
-            "score.html",
-            nickname=nickname,
-            score=score,
-            amount=amount)
-    except BaseException:
-        return render_template(
-            "score.html",
-            nickname="User",
-            score=score,
-            amount=amount)
-
-''' 
-@app.route("/")
-def home():
-    return render_template('index.html')
-
-@app.route("/about")
-def about():
-    return render_template('about.html')
-    
+            
 if __name__ == '__main__':
-    app.run(debug=True)
-
-#hello
+    socketio.run(app, debug=True)
