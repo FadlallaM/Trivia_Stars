@@ -48,11 +48,11 @@
 
 
         <div class="container-fluid" id="question">
-            <h3>{{ Question }}</h3>
+            <h3>{{ question }}</h3>
         </div>
 
         <div class = "formstuff">
-            <form name="answers_form" id="answers_id" method="POST">
+            <form name="answers_form" id="answers_id" method="POST" action="/next/question">
                 <input type="checkbox" id="answer1" name="answers" value="0">
                 <label for="answer1" id="answer1">
                     <img src = "{{ url_for('static', filename='images/a.png') }}"> {{ answer1 }} 

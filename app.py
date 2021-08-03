@@ -1,22 +1,129 @@
 from flask import Flask, render_template, redirect, request
 from flask_socketio import SocketIO, emit, join_room
 import os
-#import requests
-#import random
-#import html
+import requests
+import random
+import html
+import time
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
-socketio = SocketIO(app)
-socketio.init_app(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*")
+socketio.init_app(app)
 
 rooms = {}
 
-
 @app.route("/")
 def home():
-    return render_template('index.html')
+    print('ON HOME PAGE')
+    global next_que
+    global question_list
+    global correct_answers
+    global final_answers
+    global amount
+    global score
+    global database_list
+    global played_solo
+    global nickname
+    played_solo = False
+    next_que = 0
+    amount = 0
+    score = 0
+    question_list = []
+    final_answers = []
+    correct_answers = []
+    database_list = []
+    return render_template("index.html")
+
+@app.route("/solo/game", methods=["POST"])
+def user_input():
+    global amount
+    global nickname
+    played_solo = True
+    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'society_and_culture', 'sport_and_leisure', 'geography']
+    amount = request.form.get("amount")
+    category = request.form.get("category")
+    difficulty = request.form.get("difficulty")
+    nickname = request.form.get("nickname")
+    print(nickname)
+
+
+    # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
+    if (category in categories_list):
+        url = getNewUrl(amount,category)
+        Json = getNewJson(url)
+        correct_answers, final_answers, question_list = newToDict(Json)
+
+    else:
+        url = getUrl(amount, category,difficulty)
+        Json = getJson(url)
+        correct_answers, final_answers, question_list = toDict(Json)
+    
+
+    return quiz(correct_answers, final_answers, question_list)
+
+@app.route('/next/question', methods=["POST"])
+def next_question():
+    global next_que
+    global question_list
+    global correct_answers
+    global final_answers
+    #global amount
+    global score
+
+    answer = request.form.get("answers")
+
+    if(final_answers[next_que][int(answer)] == correct_answers[next_que]):
+        print(final_answers[next_que][int(answer)])
+        print(correct_answers[next_que])
+        score += 1
+    
+    print('NEXT QUE: ', next_que)
+    print('AMOUNT ', amount)
+    if int(next_que + 1) == int(amount):
+        print('NEXT QUE: in if ', next_que)
+        print('\n\n\nLAST QUESTION\n\n\n\n')
+        link = "/display_score/" + str(score) + str(amount)
+        return redirect(link)
+        # print(score)
+        
+    next_que += 1
+    print('SHOULD START AT 1', next_que)
+    print('final answers: ')
+    print(final_answers)
+    question_name = question_list[next_que]
+
+    return render_template(
+        'quiz.html',
+        question=str(
+        next_que + 1) + ") " + html.unescape(question_name),
+        answer1=html.unescape(
+        final_answers[next_que][0]),
+        answer2=html.unescape(
+        final_answers[next_que][1]),
+        answer3=html.unescape(
+        final_answers[next_que][2]),
+        answer4=html.unescape(
+        final_answers[next_que][3]))
+    
+@app.route("/display_score/<score><amount>")
+def display_score(score, amount):
+    global nickname
+    #time = stop stopwatch
+    #addToDB(nickname,score,time)
+    try:
+        return render_template(
+            "score.html",
+            Nickname=nickname,
+            score=score,
+            amount=amount)
+    except BaseException:
+        return render_template(
+            "score.html",
+            Nickname="User",
+            score=score,
+            amount=amount)
 
 @app.route("/about")
 def about():
@@ -24,6 +131,7 @@ def about():
 
 @app.route("/leaderboard")
 def leaderboard():
+
     return render_template('leaderboard.html')
 
 @app.route("/quiz<room>")
@@ -101,43 +209,12 @@ def on_score(data):
     if is_admin(request.sid, room):
         emit('score', { 'leaderboard' : leaderboard }, room=room)
 
-    
-if __name__ == '__main__':
-    socketio.run(app, debug=True)
 
 
-
-
-app.config['SECRET_KEY'] = '51'
-
-
-@app.route("/solo/game", methods=["POST"])
-def user_input():
-    global question_list
-    global correct_answers
-    global final_answers
-    global amount
-    categories_list = ['food_and_drink', 'art_and_literature', 'movies', 'music', 'society_and_culture', 'sport_and_leisure', 'geography']
-    amount = request.form.get("amount")
-    category = request.form.get("category")
-    difficulty = request.form.get("difficulty")
-
-    # if the category is food and drink, art and literature, movies, music, science, society and culture or sport and leisure use second api
-    if (category in categories_list):
-        url = getNewUrl(amount,category)
-        Json = getNewJson(url)
-        correct_answers, final_answers, question_list = newToDict(Json)
-
-    else:
-        url = getUrl(amount, category,difficulty)
-        Json = getJson(url)
-        correct_answers, final_answers, question_list = toDict(Json)
-    
-
-    return quiz(correct_answers, final_answers, question_list)
 
 
 def getNewUrl(amount,category):
+    print('MADE IT TO GET NEW URL')
     base_url = 'https://trivia.willfry.co.uk/api/questions?'
     final_url = base_url + 'limit=' + str(amount)
     # print('before, ', final_url)
@@ -154,23 +231,20 @@ def getNewJson(url):
 
 
 def newToDict(json):
-    question_list = []
-    correct_list = []
     correct = []
     answers = []
-    final_answers = []
     temp_list = []
     for value in json:
         #print(value['question'])
         question_list.append(value['question'])
-        correct_list.append(value['correctAnswer'])
+        correct_answers.append(value['correctAnswer'])
         correct = value['correctAnswer']
         # Grabs only 3 incorrect answers to make sure corect answer will always be on screen
         answers = value['incorrectAnswers'][:3]
         answers.append(correct)
         random.shuffle(answers)
         final_answers.append(answers)
-    return correct_list, final_answers, question_list
+    return correct_answers, final_answers, question_list
 
 
 def getUrl(amount, category, difficulty):
@@ -183,6 +257,8 @@ def getUrl(amount, category, difficulty):
     # difficulty
     if difficulty != 'default_d':
         final_url = final_url + '&difficulty=' + str(difficulty)
+    
+    final_url = final_url + '&type=multiple'
 
     return final_url
 
@@ -194,16 +270,13 @@ def getJson(final_url):
 
 
 def toDict(json_data):
-    question_list = []
-    correct_list = []
     correct = []
     answers = []
-    final_answers = []
     for value in json_data['results']:
         # print(value)
         # questions.append(value['question'])
         question_list.append(value['question'])
-        correct_list.append(value['correct_answer'])
+        correct_answers.append(value['correct_answer'])
         correct = value['correct_answer']
         answers = value['incorrect_answers']
         answers.append(correct)
@@ -213,43 +286,11 @@ def toDict(json_data):
     # print('f answers ', final_answers)
     # print('c list' , correct_list)
 
-    return correct_list, final_answers, question_list
+    return correct_answers, final_answers, question_list
 
 
-@app.route("/")
-def home():
-    global next_que
-    global question_list
-    global correct_answers
-    global final_answers
-    global amount
-    global score
-    global database_list
-    next_que = 0
-    amount = 0
-    score = 0
-    question_list = []
-    final_answers = []
-    correct_answers = []
-    database_list = []
-    return render_template("index.html")
 
 
-# @app.route("/quiz")
-# def quiz_2():
-#     return render_template("quiz.html")
-
-
-@app.route("/nickname", methods=["POST"])
-def nickname_page():
-    global nickname
-    nickname = request.form.get("nickname")
-    return render_template("info.html")
-
-
-# @app.route("/info")
-# def info():
-#     return render_template("info.html")
 
 
 def quiz(correct_answers, final_answers, question_list):
@@ -275,68 +316,6 @@ def quiz(correct_answers, final_answers, question_list):
 next_que = 0
 score = 0
 
-
-@app.route('/next/question', methods=["POST"])
-def next_question():
-    global next_que
-    global question_list
-    global correct_answers
-    global final_answers
-    global amount
-    global score
-
-    answer = request.form.get("answers")
-
-    if(final_answers[next_que][int(answer)] == correct_answers[next_que]):
-        print(final_answers[next_que][int(answer)])
-        print(correct_answers[next_que])
-        score += 1
-    
-
-    if int(next_que + 1) == int(amount):
-        print('\n\n\nLAST QUESTION\n\n\n\n')
-        link = "/display_score/" + str(score) + str(amount)
-        return redirect(link)
-        # print(score)
-        
-    next_que += 1
-    question_name = question_list[next_que]
-    # print(question_name)
-
-    # print(next_que)
-    # print('AMT: ', amount)
-
-   # if question_type == 'multiple':
-        #print(final_answers)
-        return render_template(
-            'quiz.html',
-            question=str(
-                next_que + 1) + ") " + html.unescape(question_name),
-            answer1=html.unescape(
-                final_answers[next_que][0]),
-            answer2=html.unescape(
-                final_answers[next_que][1]),
-            answer3=html.unescape(
-                final_answers[next_que][2]),
-            answer4=html.unescape(
-                final_answers[next_que][3]))
-
-
-
-@app.route("/display_score/<score><amount>")
-def display_score(score, amount):
-    global nickname
-    #time = stop stopwatch
-    #addToDB(nickname,score,time)
-    try:
-        return render_template(
-            "score.html",
-            nickname=nickname,
-            score=score,
-            amount=amount)
-    except BaseException:
-        return render_template(
-            "score.html",
-            nickname="User",
-            score=score,
-            amount=amount)
+            
+if __name__ == '__main__':
+    socketio.run(app, debug=True)
